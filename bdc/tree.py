@@ -1,6 +1,9 @@
 """Tree of nodes implementation."""
 
-from typing import Union
+from typing import (
+    Optional,
+    Union,
+)
 
 from bdc.node import Node
 
@@ -23,13 +26,13 @@ class Tree:
         self.nodes = {}
         self._node_index = 0
 
-    def add_root(self, node_value: str):
+    def add_root(self, node_value: str) -> Node:
         """Add root."""
         if self.nodes or self._node_index != 0:
             raise RuntimeError('Tree already have root node')
         return self._create_new_node(node_value)
 
-    def add_to_parent(self, node_value: str, parent: Union[Node, int]):
+    def add_to_parent(self, node_value: str, parent: Union[Node, int]) -> Node:
         """Add node to parent."""
         if isinstance(parent, Node):
             parent_index = parent.node_id
@@ -46,16 +49,27 @@ class Tree:
         tree_parent.append_child(new_node)
         return new_node
 
-    def get(self, node_id: int):
+    def get(self, node_id: int) -> Optional[Node]:
         """Get node by node_id."""
-        return self.nodes[node_id]
+        return self.nodes.get(node_id)
+
+    def get_node_copy(self, node_id: int) -> Node:
+        """Get node simple copy."""
+        node = self.nodes[node_id]
+        return node.copy_simple()
+
+    def get_parent_id(self, node_id: int) -> int:
+        """Get node parent_id."""
+        return self.nodes[node_id].data.parent_id
 
     def delete(self, node: Union[Node, int]):
         """Delete node from tree."""
-        if not isinstance(node, Node):
-            tree_node: Node = self.get(node)
-        else:
+        if isinstance(node, Node):
             tree_node = node
+        else:
+            tree_node = self.get(node)
+            if tree_node is None:
+                raise ValueError('Unknown node id')
         tree_node.delete()
 
     def _create_new_node(self, node_value: str) -> Node:
