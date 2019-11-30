@@ -5,6 +5,17 @@ from typing import (
     Optional,
 )
 
+from dataclass import dataclass
+
+
+@dataclass
+class NodeData:
+    """Node data."""
+
+    node_id: Optional[int] = None
+    value: str
+    is_deleted: bool = False
+
 
 class Node:
     """Node.
@@ -12,39 +23,30 @@ class Node:
     Every node have parent except root node.
     """
 
-    def __init__(self, value: str):
+    def __init__(
+        self,
+        value: str,
+        node_id: Optional[int] = None,
+        is_deleted: bool = False,
+    ):
         """Init a new node."""
-        self.value = value
-        self.node_id = None
-
-        self._is_deleted = False
-        self._childs: List['Node'] = []
-        self._parent: Optional['Node'] = None
-
-    @property
-    def is_deleted(self):
-        """Is deleted."""
-        return self._is_deleted
-
-    @property
-    def parent(self):
-        """Parent."""
-        return self._parent
-
-    @property
-    def childs(self):
-        """Childs."""
-        return self._childs
+        self.data = NodeData(
+            node_id=node_id,
+            value=value,
+            is_deleted=is_deleted,
+        )
+        self.childs: List['Node'] = []
+        self.parent: Optional['Node'] = None
 
     def append_child(self, child: 'Node'):
         """Add node to child list."""
         child._set_parent(self)  # NOQA:WPS437
-        self._childs.append(child)
+        self.childs.append(child)
 
     @property
     def all_childs(self):
         """Get all childs recursively."""
-        childs = [child for child in self._childs]
+        childs = [child for child in self.childs]
         while childs:
             child = childs.pop()
             childs.extend(child._childs)  # NOQA:WPS437
@@ -52,15 +54,23 @@ class Node:
 
     def delete(self):
         """Delete node."""
-        self._is_deleted = True
+        self.data.is_deleted = True
         for child in self.all_childs:
-            child._is_deleted = True  # NOQA:WPS437
+            child.data.is_deleted = True  # NOQA:WPS437
+
+    def copy_simple(self) -> 'Node':
+        """Copy node without node connections."""
+        return Node(
+            node_id=self.data.node_id,
+            value=self.data.value,
+            is_deleted=self.data.is_deleted,
+        )
 
     def _set_parent(self, parent: 'Node'):
         """Set parent.
 
         Tree should be created by append child from root node.
         """
-        if self._parent is not None:
+        if self.parent is not None:
             raise ValueError('This node already have parent')
-        self._parent = parent
+        self.parent = parent
