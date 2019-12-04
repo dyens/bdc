@@ -10,13 +10,13 @@ class TestNode:
     @pytest.fixture
     def new_node():
         """Simple node fixture."""
-        node_id = 0
+        db_id = 0
 
         def _create_node():
             """Create new node."""
-            nonlocal node_id
-            node_id += 1
-            return Node('val{node_id}'.format(node_id=node_id))
+            nonlocal db_id
+            db_id += 1
+            return Node('val{db_id}'.format(db_id=db_id))
         return _create_node
 
     def test_init(self, new_node):
@@ -24,27 +24,9 @@ class TestNode:
         node = new_node()
         assert node.value == 'val1'
         assert node.is_deleted is False
-        assert node.node_id is None
+        assert node.db_id is None
         assert not node.childs
         assert node.parent is None
-
-    def test__set_parent(self, new_node):
-        """Testing set parent."""
-        parent = new_node()
-        child = new_node()
-        child._set_parent(parent)
-        assert child._parent == parent
-
-    def test__set_parent_fail_double_setting(self, new_node):
-        """Testing set parent fail.
-
-        case: double setting.
-        """
-        parent = new_node()
-        child = new_node()
-        child._set_parent(parent)
-        with pytest.raises(ValueError):
-            child._set_parent(parent)
 
     def test_append_child(self, new_node):
         """Testing append child."""
@@ -87,3 +69,21 @@ class TestNode:
         assert grand_parent.is_deleted is True
         assert parent.is_deleted is True
         assert child.is_deleted is True
+
+    def test_set_parent(self, new_node):
+        """Testing set parent."""
+        parent = new_node()
+        child = new_node()
+        child.set_parent(parent)
+        assert child.parent == parent
+
+    def test_set_parent_fail_double_setting(self, new_node):
+        """Testing set parent fail.
+
+        case: double setting.
+        """
+        parent = new_node()
+        child = new_node()
+        child.set_parent(parent)
+        with pytest.raises(ValueError):
+            child.set_parent(parent)
