@@ -134,18 +134,10 @@
       </widget>
      </item>
      <item>
-      <widget class="QTreeView" name="model_view"/>
+      <widget class="QTreeView" name="db_view"/>
      </item>
     </layout>
    </widget>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>LeftToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

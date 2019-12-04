@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'bdc/design.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -63,13 +62,10 @@ class Ui_MainWindow(object):
         self.load_to_cache_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.load_to_cache_button.setObjectName("load_to_cache_button")
         self.horizontalLayout.addWidget(self.load_to_cache_button)
-        self.model_view = QtWidgets.QTreeView(self.horizontalLayoutWidget)
-        self.model_view.setObjectName("model_view")
-        self.horizontalLayout.addWidget(self.model_view)
+        self.db_view = QtWidgets.QTreeView(self.horizontalLayoutWidget)
+        self.db_view.setObjectName("db_view")
+        self.horizontalLayout.addWidget(self.db_view)
         MainWindow.setCentralWidget(self.centralWidget)
-        self.mainToolBar = QtWidgets.QToolBar(MainWindow)
-        self.mainToolBar.setObjectName("mainToolBar")
-        MainWindow.addToolBar(QtCore.Qt.LeftToolBarArea, self.mainToolBar)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -83,5 +79,4 @@ class Ui_MainWindow(object):
         self.apply_cache_button.setText(_translate("MainWindow", "Apply"))
         self.reset_cache_button.setText(_translate("MainWindow", "Reset"))
         self.load_to_cache_button.setText(_translate("MainWindow", "<<"))
-
 

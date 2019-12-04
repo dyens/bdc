@@ -16,4 +16,4 @@ check: flake mypy pytest
 
 
 pyuic:
-	-pyuic5 bdc/design.ui -o bdc/design.py
+	-pyuic5 bdc/ui/design.ui -o bdc/ui/design.py
