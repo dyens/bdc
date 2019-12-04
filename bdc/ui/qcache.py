@@ -3,7 +3,7 @@ from PyQt5.QtCore import QModelIndex
 from PyQt5.QtGui import QStandardItemModel
 
 from bdc.cache import Cache
-from bdc.ui.node import NodeToQNodeMixin
+from bdc.ui.qnode import NodeToQNodeMixin
 
 
 class QCache(QStandardItemModel, NodeToQNodeMixin):

@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QStandardItemModel
 
 from bdc.db import DB
-from bdc.ui.node import NodeToQNodeMixin
+from bdc.ui.qnode import NodeToQNodeMixin
 
 
 class QDB(QStandardItemModel, NodeToQNodeMixin):

@@ -3,10 +3,7 @@ from typing import (
     Iterable,
 )
 
-from PyQt5.QtGui import (
-    QStandardItem,
-    QStandardItemModel,
-)
+from PyQt5.QtGui import QStandardItem
 
 from bdc.node import Node
 
@@ -26,7 +23,7 @@ class QNode(QStandardItem):
             self.setEnabled(False)  # NOQA:WPS425
 
 
-class NodeToQNodeMixin(QStandardItemModel):
+class NodeToQNodeMixin:
     """Mixin for creating QNodes from node list."""
 
     def node_to_qnode(self, node_list: Iterable[Node]):
@@ -51,3 +48,7 @@ class NodeToQNodeMixin(QStandardItemModel):
                 qnode = QNode(node)
                 qparent.appendRow(qnode)
             loaded_nodes[node] = qnode
+
+    def appendRow(self, *args, **kwargs):  # NOQA:N802
+        """Append row to root."""
+        raise NotImplementedError
