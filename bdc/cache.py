@@ -94,4 +94,6 @@ class Cache:
                 node.value,
                 node.is_deleted,
             )
+            # now new node have db_id
+            node.db_id = new_node.db_id
             self.db_nodes[new_node.db_id] = node
