@@ -1,0 +1,29 @@
+* BDC
+  Имплементация локального кеша древовидной базы данных.
+[[https://github.com/dyens/bdc/blob/master/test_problem.pdf][  Описание требований]]
+** Install
+   Необходимые программы, установленные в системе:
+   #+BEGIN_SRC sh :results output silent
+   $ poetry --version
+   Poetry version 1.0.0b8
+   #+END_SRC
+   #+BEGIN_SRC sh :results output silent
+   $ python --version
+   Python 3.7.5
+   #+END_SRC
+   
+   Для установки python зависимостей:
+   #+BEGIN_SRC sh :results output silent
+   poetry install
+   #+END_SRC
+** Run
+   Для запуска приложения:
+   
+   #+BEGIN_SRC sh :results output silent
+   make run # или poetry run python main.py
+   #+END_SRC
+** Testing
+   Для запуска тестов:
+   #+BEGIN_SRC sh :results output silent
+   make check
+   #+END_SRC
