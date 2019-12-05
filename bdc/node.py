@@ -47,11 +47,17 @@ class Node:
             childs.extend(child.childs)  # NOQA:WPS437
             yield child
 
-    def delete(self):
-        """Delete node."""
+    def delete(self) -> List['Node']:
+        """Delete node.
+
+        Return deleted childs
+        """
+        deleted_nodes = []
         self.is_deleted = True
         for child in self.all_childs:
             child.is_deleted = True  # NOQA:WPS437
+            deleted_nodes.append(child)
+        return deleted_nodes
 
     def set_parent(self, parent: 'Node'):
         """Set parent.

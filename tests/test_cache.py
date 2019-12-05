@@ -138,3 +138,23 @@ class TestCache:
         assert node_2_1.value == 'node_2_1'
         assert set(node_2_1.childs) == {node_modified, node_3_2}
         assert node_2_1.parent == node_1_1
+
+    def test_save_update_deleted_childs(self):
+        """Test save to db.
+
+        case: auto update deleted childs in cache
+        """
+        db = DB.default()
+        cache = Cache()
+        cache.load(3, db)
+        cache.load(7, db)
+        root_cache = cache.cache_nodes[0]
+        child_cache = cache.cache_nodes[1]
+        root_db = db.nodes[3]
+        child_db = db.nodes[7]
+        root_cache.delete()
+        cache.save(db)
+        assert root_cache.is_deleted is True
+        assert root_db.is_deleted is True
+        assert child_cache.is_deleted is True
+        assert child_db.is_deleted is True

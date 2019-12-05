@@ -94,3 +94,5 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.cache_model.cache.save(self.db_model.db)
         self.db_model.refresh()
         self.db_view.expandAll()
+        self.cache_model.refresh()
+        self.cache_view.expandAll()

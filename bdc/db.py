@@ -115,16 +115,19 @@ class DB:
         """Get node parent_id."""
         return [child.db_id for child in self.nodes[db_id].childs]
 
-    def update_node(self, db_id: int, value: str, is_deleted: bool):
+    def update_node(self, db_id: int, value: str, is_deleted: bool) -> Optional[List[Node]]:
         """Update node.
 
         If node deleted, all childs marked as deleted.
+        If deleting node func return deleted childs.
         """
         node = self.nodes[db_id]
         node.value = value
         # Undeleted operation not exist
         if is_deleted:
-            node.delete()
+            deleted_childs: List[Node] = node.delete()
+            return deleted_childs  # NOQA:WPS331
+        return None
 
     def create_new_node(self, value: str, is_deleted: bool) -> Node:
         """Create new node and add it to index."""

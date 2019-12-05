@@ -56,14 +56,6 @@ class Cache:
 
         # restore node connections
 
-        # restore parent and is_deleted attribute
-        # if parent deleted node should be deleted to
-        parent_id = db.get_parent_id(db_id)
-        if parent_id in self.db_nodes:
-            parent = self.db_nodes[parent_id]
-            new_node.is_deleted = parent.is_deleted
-            parent.append_child(new_node)
-
         # restore child connections
         child_ids = db.get_children_ids(db_id)
         for child_id in child_ids:
@@ -71,18 +63,30 @@ class Cache:
                 child = self.db_nodes[child_id]
                 new_node.append_child(child)
 
+        # restore parent and is_deleted attribute
+        # if parent deleted node should be deleted to
+        parent_id = db.get_parent_id(db_id)
+        if parent_id in self.db_nodes:
+            parent = self.db_nodes[parent_id]
+            parent.append_child(new_node)
+            if parent.is_deleted:
+                new_node.delete()
+
     def save(self, db: DB):
         """Save cache to db."""
         # new created nodes appended to the end of dict
         # in python >= 3.6 dicts are ordered
+        deleted = []
         for _cache_id, node in self.cache_nodes.items():
             db_id = node.db_id
-            if db_id:
-                db.update_node(
+            if db_id is not None:
+                deleted_childs = db.update_node(
                     db_id,
                     node.value,
                     node.is_deleted,
                 )
+                if deleted_childs:
+                    deleted.extend(deleted_childs)
                 continue
 
             parent = node.parent
@@ -97,3 +101,12 @@ class Cache:
             # now new node have db_id
             node.db_id = new_node.db_id
             self.db_nodes[new_node.db_id] = node
+
+        # Case when delete root node.
+        # But in cache we have not connection from
+        # some subnode to this root.
+        # This subnode should be deleted too.
+        for db_node in deleted:
+            cache_node = self.db_nodes.get(db_node.db_id)
+            if cache_node:
+                cache_node.delete()
