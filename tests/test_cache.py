@@ -158,3 +158,100 @@ class TestCache:
         assert root_db.is_deleted is True
         assert child_cache.is_deleted is True
         assert child_db.is_deleted is True
+
+
+class TestCacheDBInteraction:
+    """Cache-db interactions testing.
+
+    DB struct:
+    id value
+    0  root
+    1    node_1_1
+    3      node_2_1
+    5        node_3_1
+    7          node_4_1
+    8          node_4_2
+    6        node_3_2
+    4      node_2_2
+    2    node_1_2
+    """
+
+    def test_update_value(self):
+        """Test update value."""
+        db = DB.default()
+        cache = Cache()
+        cache.load(5, db)
+        cache.cache_nodes[0].value = 'new_value'
+        cache.save(db)
+        assert db.nodes[5].value == 'new_value'
+
+    def test_delete(self):
+        """Test delete."""
+        db = DB.default()
+        cache = Cache()
+        cache.load(5, db)
+        cache.delete(0)
+        cache.save(db)
+        assert db.nodes[5].is_deleted is True
+        assert db.nodes[7].is_deleted is True
+        assert db.nodes[8].is_deleted is True
+
+    def test_new(self):
+        """Test new."""
+        db = DB.default()
+        cache = Cache()
+        cache.load(5, db)
+        cache.add_node(0)
+        cache.save(db)
+        assert db.nodes[9].value == Cache.default_name
+
+    def test_new_and_delete_parent(self):
+        """Test new and delete parent."""
+        db = DB.default()
+        cache = Cache()
+        cache.load(5, db)
+        cache.add_node(0)
+        cache.delete(0)
+        cache.save(db)
+        assert cache.cache_nodes[0].is_deleted is True
+        assert cache.cache_nodes[1].is_deleted is True
+        assert db.nodes[8].is_deleted is True
+        assert db.nodes[9].is_deleted is True
+
+    def test_new_and_delete_parent(self):
+        """Test new and delete parent."""
+        db = DB.default()
+        cache = Cache()
+        cache.load(5, db)
+        cache.add_node(0)
+        cache.delete(0)
+        cache.save(db)
+        assert cache.cache_nodes[0].is_deleted is True
+        assert cache.cache_nodes[1].is_deleted is True
+        assert db.nodes[5].is_deleted is True
+        assert db.nodes[7].is_deleted is True
+        assert db.nodes[8].is_deleted is True
+        assert db.nodes[9].is_deleted is True
+
+    def test_new_and_delete_gp(self):
+        """Test add grand parent, child. Add new to child and delete gp."""
+        db = DB.default()
+        cache = Cache()
+        cache.load(1, db)
+        cache.load(5, db)
+        cache.add_node(1)
+        cache.delete(0)
+        assert cache.cache_nodes[1].is_deleted is False
+        assert cache.cache_nodes[2].is_deleted is False
+        cache.save(db)
+        assert cache.cache_nodes[0].is_deleted is True
+        # child and new node deleted after load too.
+        assert cache.cache_nodes[1].is_deleted is True
+        assert cache.cache_nodes[2].is_deleted is True
+        assert db.nodes[1].is_deleted is True
+        assert db.nodes[3].is_deleted is True
+        assert db.nodes[5].is_deleted is True
+        assert db.nodes[7].is_deleted is True
+        assert db.nodes[8].is_deleted is True
+        assert db.nodes[6].is_deleted is True
+        assert db.nodes[4].is_deleted is True
