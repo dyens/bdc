@@ -215,19 +215,6 @@ class TestCacheDBInteraction:
         cache.save(db)
         assert cache.cache_nodes[0].is_deleted is True
         assert cache.cache_nodes[1].is_deleted is True
-        assert db.nodes[8].is_deleted is True
-        assert db.nodes[9].is_deleted is True
-
-    def test_new_and_delete_parent(self):
-        """Test new and delete parent."""
-        db = DB.default()
-        cache = Cache()
-        cache.load(5, db)
-        cache.add_node(0)
-        cache.delete(0)
-        cache.save(db)
-        assert cache.cache_nodes[0].is_deleted is True
-        assert cache.cache_nodes[1].is_deleted is True
         assert db.nodes[5].is_deleted is True
         assert db.nodes[7].is_deleted is True
         assert db.nodes[8].is_deleted is True
