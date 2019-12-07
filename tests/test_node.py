@@ -77,6 +77,18 @@ class TestNode:
         child.set_parent(parent)
         assert child.parent == parent
 
+    def test_set_parent_deleted(self, new_node):
+        """Testing set parent.
+
+        case: deleted parent. Child should be deleted too.
+        """
+        parent = new_node()
+        parent.is_deleted = True
+        child = new_node()
+        assert child.is_deleted is False
+        child.set_parent(parent)
+        assert child.is_deleted is True
+
     def test_set_parent_fail_double_setting(self, new_node):
         """Testing set parent fail.
 

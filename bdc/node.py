@@ -67,6 +67,9 @@ class Node:
         if self.parent is not None:
             raise ValueError('This node already have parent')
         self.parent = parent
+        # If parent already deleted child should be deleted too
+        if parent.is_deleted:
+            self.is_deleted = True
 
 
 class CNode(Node):
