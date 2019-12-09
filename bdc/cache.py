@@ -14,6 +14,8 @@ class Cache:
         """Initialization."""
         # Nodes  db index
         self.db_nodes = {}
+        # Without parent node db_ids
+        self.orphans = set()
         # Nodes  cache  index
         self.cache_nodes = {}
         self._cache_index = 0
@@ -64,12 +66,14 @@ class Cache:
 
         # restore node connections
 
-        # restore child connections
-        child_ids = db.get_children_ids(db_id)
-        for child_id in child_ids:
-            if child_id in self.db_nodes:
-                child = self.db_nodes[child_id]
+        adoptees = []
+        for orphan in self.orphans:
+            is_child = db.is_child(orphan, db_id)
+            if is_child:
+                child = self.db_nodes[orphan]
                 new_node.append_child(child)
+                adoptees.append(orphan)
+        self.orphans -= set(adoptees)
 
         # restore parent and is_deleted attribute
         # if parent deleted node should be deleted to
@@ -77,8 +81,11 @@ class Cache:
         if parent_id in self.db_nodes:
             parent = self.db_nodes[parent_id]
             parent.append_child(new_node)
+            self.orphans.discard(db_id)
             if parent.is_deleted:
                 new_node.delete()
+        else:
+            self.orphans.add(db_id)
 
     def save(self, db: DB):
         """Save cache to db."""
