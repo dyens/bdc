@@ -25,14 +25,6 @@ class Node:
         self.childs: List['Node'] = []
         self.parent: Optional['Node'] = None
 
-    def __str__(self):
-        """Get string representation."""
-        return 'Node({db_id}, {value}, {is_deleted})'.format(
-            db_id=self.db_id,
-            value=self.value,
-            is_deleted=self.is_deleted,
-        )
-
     def append_child(self, child: 'Node'):
         """Add node to child list."""
         child.set_parent(self)  # NOQA:WPS437
