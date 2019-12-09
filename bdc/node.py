@@ -1,9 +1,19 @@
 """Node implementation."""
 
+from dataclasses import dataclass
 from typing import (
     List,
     Optional,
 )
+
+
+@dataclass
+class NodeParams:
+    """Node parameters."""
+
+    db_id: Optional[int]
+    value: str
+    is_deleted: bool
 
 
 class Node:
@@ -73,10 +83,12 @@ class CNode(Node):
     def __init__(
         self,
         cache_id: int,
-        value: str,
-        db_id: Optional[int] = None,
-        is_deleted: bool = False,
+        node_params: NodeParams,
     ):
         """Init a new node."""
-        super().__init__(value, db_id, is_deleted)
+        super().__init__(
+            value=node_params.value,
+            db_id=node_params.db_id,
+            is_deleted=node_params.is_deleted,
+        )
         self.cache_id = cache_id

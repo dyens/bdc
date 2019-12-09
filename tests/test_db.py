@@ -77,11 +77,9 @@ class TestDB:
         db.add_to_parent(root, 'val2', is_deleted=True)
         params = db.get_node_params(1)
 
-        assert params == {
-            'db_id': 1,
-            'value': 'val2',
-            'is_deleted': True,
-        }
+        assert params.db_id == 1
+        assert params.value == 'val2'
+        assert params.is_deleted is True
 
     def test_get_parent_id(self):
         """Test get parent id."""

@@ -1,7 +1,10 @@
 """Cache of db implementation."""
 
 from bdc.db import DB
-from bdc.node import CNode
+from bdc.node import (
+    CNode,
+    NodeParams,
+)
 
 
 class Cache:
@@ -28,11 +31,15 @@ class Cache:
         cache_id = self._cache_index
         self._cache_index += 1
 
-        new_node = CNode(
-            cache_id=cache_id,
+        new_node_params = NodeParams(
             value=self.default_name,
             db_id=None,
             is_deleted=False,
+        )
+
+        new_node = CNode(
+            cache_id=cache_id,
+            node_params=new_node_params,
         )
         parent.append_child(new_node)
         self.cache_nodes[cache_id] = new_node
@@ -46,11 +53,13 @@ class Cache:
 
         # create node copy
         new_node_params = db.get_node_params(db_id)
-        db_id = new_node_params['db_id']
         cache_id = self._cache_index
         self._cache_index += 1
-        new_node = CNode(cache_id, **new_node_params)
-        self.db_nodes[db_id] = new_node
+        new_node = CNode(
+            cache_id=cache_id,
+            node_params=new_node_params,
+        )
+        self.db_nodes[new_node_params.db_id] = new_node
         self.cache_nodes[cache_id] = new_node
 
         # restore node connections

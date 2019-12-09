@@ -6,7 +6,10 @@ from typing import (
     Union,
 )
 
-from bdc.node import Node
+from bdc.node import (
+    Node,
+    NodeParams,
+)
 
 
 class DB:
@@ -92,14 +95,14 @@ class DB:
         node: Optional[None] = self.nodes.get(db_id)
         return node  # NOQA: WPS331
 
-    def get_node_params(self, db_id: int):
+    def get_node_params(self, db_id: int) -> NodeParams:
         """Get node simple copy."""
         node = self.nodes[db_id]
-        return {
-            'db_id': node.db_id,
-            'value': node.value,
-            'is_deleted': node.is_deleted,
-        }
+        return NodeParams(
+            db_id=node.db_id,
+            value=node.value,
+            is_deleted=node.is_deleted,
+        )
 
     def get_parent_id(self, db_id: int) -> Optional[int]:
         """Get node parent_id."""
