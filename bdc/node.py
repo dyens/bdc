@@ -32,31 +32,31 @@ class Node:
         self.value = value
         self.is_deleted = is_deleted
         self.db_id = db_id
-        self.childs: List['Node'] = []
+        self.children: List['Node'] = []
         self.parent: Optional['Node'] = None
 
     def append_child(self, child: 'Node'):
         """Add node to child list."""
         child.set_parent(self)  # NOQA:WPS437
-        self.childs.append(child)
+        self.children.append(child)
 
     @property
-    def all_childs(self):
-        """Get all childs recursively."""
-        childs = [child for child in self.childs]
-        while childs:
-            child = childs.pop()
-            childs.extend(child.childs)  # NOQA:WPS437
+    def all_children(self):
+        """Get all children recursively."""
+        children = [child for child in self.children]
+        while children:
+            child = children.pop()
+            children.extend(child.children)  # NOQA:WPS437
             yield child
 
     def delete(self) -> List['Node']:
         """Delete node.
 
-        Return deleted childs
+        Return deleted children
         """
         deleted_nodes = []
         self.is_deleted = True
-        for child in self.all_childs:
+        for child in self.all_children:
             child.is_deleted = True  # NOQA:WPS437
             deleted_nodes.append(child)
         return deleted_nodes

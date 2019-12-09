@@ -88,13 +88,13 @@ class Cache:
         for _cache_id, node in self.cache_nodes.items():
             db_id = node.db_id
             if db_id is not None:
-                deleted_childs = db.update_node(
+                deleted_children = db.update_node(
                     db_id,
                     node.value,
                     node.is_deleted,
                 )
-                if deleted_childs:
-                    deleted.extend(deleted_childs)
+                if deleted_children:
+                    deleted.extend(deleted_children)
                 continue
 
             parent = node.parent

@@ -44,10 +44,10 @@ class TestDB:
 
         assert len(db.nodes) == 3
         assert child2.parent == child1
-        assert child1.childs == [child2]
+        assert child1.children == [child2]
 
         assert child1.parent == root
-        assert root.childs == [child1]
+        assert root.children == [child1]
 
     def test_to_parent_fail_unknown_parent(self):
         """Test add to parent fail.

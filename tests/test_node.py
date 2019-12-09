@@ -25,7 +25,7 @@ class TestNode:
         assert node.value == 'val1'
         assert node.is_deleted is False
         assert node.db_id is None
-        assert not node.childs
+        assert not node.children
         assert node.parent is None
 
     def test_append_child(self, new_node):
@@ -33,7 +33,7 @@ class TestNode:
         parent = new_node()
         child = new_node()
         parent.append_child(child)
-        assert parent.childs == [child]
+        assert parent.children == [child]
         assert child.parent == parent
 
     def test_append_child_fail_double_append(self, new_node):
@@ -47,15 +47,15 @@ class TestNode:
         with pytest.raises(ValueError):
             parent.append_child(child)
 
-    def test_all_childs(self, new_node):
-        """Test all childs."""
+    def test_all_children(self, new_node):
+        """Test all children."""
         grand_parent = new_node()
         parent = new_node()
         child = new_node()
         parent.append_child(child)
         grand_parent.append_child(parent)
 
-        assert list(grand_parent.all_childs) == [parent, child]
+        assert list(grand_parent.all_children) == [parent, child]
 
     def test_delete(self, new_node):
         """Test delete."""
