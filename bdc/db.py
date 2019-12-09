@@ -113,9 +113,12 @@ class DB:
             return parent_id  # NOQA: WPS331
         return None
 
-    def get_children_ids(self, db_id: int) -> List[int]:
-        """Get node parent_id."""
-        return [child.db_id for child in self.nodes[db_id].children]
+    def is_child(self, child_id: int, parent_id: int) -> bool:
+        """Check connection between child and parent."""
+        child = self.nodes[child_id]
+        if child.parent is not None and child.parent.db_id == parent_id:
+            return True
+        return False
 
     def update_node(self, db_id: int, value: str, is_deleted: bool) -> Optional[List[Node]]:
         """Update node.

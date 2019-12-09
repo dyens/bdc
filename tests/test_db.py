@@ -95,15 +95,14 @@ class TestDB:
         with pytest.raises(KeyError):
             parent_id = db.get_parent_id(4)
 
-    def test_get_children_ids(self):
-        """Test get children ids."""
+    def test_is_child(self):
+        """Test is child."""
         db = DB()
         root = db.add_root('val1')
-        db.add_to_parent(root, 'val2')
-        db.add_to_parent(root, 'val3')
-
-        children_ids = db.get_children_ids(0)
-        assert children_ids == [1, 2]
+        child = db.add_to_parent(root, 'val2')
+        grandson = db.add_to_parent(child, 'val3')
+        assert db.is_child(child.db_id, root.db_id) is True
+        assert db.is_child(grandson.db_id, root.db_id) is False
 
     def test_update_node(self):
         """Test update node."""

@@ -51,15 +51,14 @@ class TestCache:
         """Test load from db."""
         db = DB.default()
         cache = Cache()
-        cache.load(5, db)
 
+        cache.load(5, db)
         m_node = cache.cache_nodes[0]
         assert m_node.value == 'node_3_1'
         assert m_node.parent is None
         assert not m_node.children
 
         cache.load(7, db)
-
         l_node = cache.cache_nodes[1]
         assert l_node.value == 'node_4_1'
         assert l_node.parent is m_node
@@ -67,7 +66,6 @@ class TestCache:
         assert m_node.children == [l_node]
 
         cache.load(3, db)
-
         h_node = cache.cache_nodes[2]
         assert h_node.value == 'node_2_1'
         assert h_node.parent is None
