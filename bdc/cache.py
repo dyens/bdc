@@ -14,7 +14,6 @@ class Cache:
         # Nodes  cache  index
         self.cache_nodes = {}
         self._cache_index = 0
-        super().__init__()
 
     def delete(self, cache_id: int):
         """Delete nodes from cache."""

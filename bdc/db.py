@@ -28,7 +28,6 @@ class DB:
         """DB initialization."""
         self.nodes = {}
         self._node_index = 0
-        super().__init__()
 
     @classmethod
     def default(cls):

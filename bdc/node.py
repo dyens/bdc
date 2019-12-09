@@ -78,5 +78,5 @@ class CNode(Node):
         is_deleted: bool = False,
     ):
         """Init a new node."""
-        self.cache_id = cache_id
         super().__init__(value, db_id, is_deleted)
+        self.cache_id = cache_id

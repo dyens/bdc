@@ -16,8 +16,8 @@ class QNode(QStandardItem):
 
     def __init__(self, node: Node):
         """Initialization."""
+        super().__init__(node.value)
         self.node = node
-        super().__init__(self.node.value)
         if node.is_deleted:
             self.setEditable(False)  # NOQA:WPS425
             self.setEnabled(False)  # NOQA:WPS425

@@ -9,8 +9,8 @@ class QDB(QStandardItemModel, NodeToQNodeMixin):
 
     def __init__(self):
         """Initialization."""
-        self.db = DB.default()
         super().__init__()
+        self.db = DB.default()
 
     def update(self):
         """Update qt items from items."""
